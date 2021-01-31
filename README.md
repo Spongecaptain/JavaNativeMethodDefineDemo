@@ -84,9 +84,6 @@ JNIEXPORT void JNICALL Java_HelloWorld_sayHelloWorld
 #endif
 #endif
 ```
-
-为了演示方面，我们将 HelloWorld.h 文件移动到与 HelloWorld.java 同目录级别。
-
 **4.使用C/C++实现本地方法**
 
 创建 HelloWorldImpl.cpp，代码如下所示：
