@@ -128,3 +128,23 @@ java HelloWorld
 Hello World! Spongecaptain~~~
 ```
 
+## 3. 使用 JNI 的其他方式
+
+实际上，操作系统本身就提供了 C run-time library（C 运行时类库），这意味着我们不必自己实现所有的 Native 方法对应的 C/C++ 方法。
+
+例如，运行时类库提供了 open、pwrite、close、free 等方法，我们该如何利用 JNI 实现 Java 调用这些方法呢？
+
+步骤相比自己全权实现 JNI 更简单，步骤如下：
+
+1.类中定义 native 方法（这些方法又被称为 function hooks 方法），注意方法的申明以及方法名要与 C 运行时类库保持一致；
+
+2.在类的 static 语句块中调用如下语句块：
+```java
+Native.register(Platform.C_LIBRARY_NAME);
+```
+
+Platform.C_LIBRARY_NAME 参数对应一个字符串常量，在 Linux 中就是简单的 `"c"`，这代表 C 运行时类库。
+
+Native#register 方法的作用是将当前类中所有的 native 方法与指定 Native 类库进行绑定。
+
+一个使用案例是：[GitHub-jaydio 的 DirectIoLib 类](https://github.com/smacke/jaydio/blob/master/src/main/java/net/smacke/jaydio/DirectIoLib.java)
